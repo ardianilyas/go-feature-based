@@ -11,12 +11,13 @@ import (
 
 // Claims adalah struct custom untuk menyimpan data di token JWT
 type Claims struct {
-	ID uuid.UUID `json:"id"`
+	ID 		uuid.UUID `json:"id"`
+	Role 	string `json:"role"`
 	jwt.RegisteredClaims
 }
 
 // GenerateAccessToken membuat JWT Access Token
-func GenerateAccessToken(userID string) (string, error) {
+func GenerateAccessToken(userID, role string) (string, error) {
 	uid, err := uuid.Parse(userID)
 	if err != nil {
 		return "", err
@@ -24,6 +25,7 @@ func GenerateAccessToken(userID string) (string, error) {
 
 	claims := &Claims{
 		ID: uid,
+		Role: role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(15 * time.Minute)), // Access token 15 menit
 			IssuedAt:  jwt.NewNumericDate(time.Now()),

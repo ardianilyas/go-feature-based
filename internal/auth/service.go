@@ -50,7 +50,7 @@ func (s *service) Login(input LoginRequest) (*User, string, string, error) {
 		return nil, "", "", errors.New("invalid credentials")
 	}
 
-	accessToken, err := utils.GenerateAccessToken(user.ID.String())
+	accessToken, err := utils.GenerateAccessToken(user.ID.String(), user.Role)
 	if err != nil {
 		return nil, "", "", err
 	}
@@ -74,7 +74,7 @@ func (s *service) RefreshToken(refreshToken string) (*User, string, error) {
 		return nil, "", errors.New("user not found")
 	}
 
-	newAccessToken, err := utils.GenerateAccessToken(user.ID.String())
+	newAccessToken, err := utils.GenerateRefreshToken(user.ID.String())
 	if err != nil {
 		return nil, "", err
 	}

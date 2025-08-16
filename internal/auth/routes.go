@@ -21,4 +21,10 @@ func RegisterRoutes(r *gin.Engine, service Service) {
 	{
 		protected.GET("/profile", h.Profile)
 	}
+
+	admin := r.Group("/admin")
+	admin.Use(middlewares.JWTAuth(), middlewares.RequireRole("admin"))
+	admin.GET("/", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{"message": "Hello Admin!"})
+	})
 }

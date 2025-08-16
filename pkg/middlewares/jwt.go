@@ -24,6 +24,7 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 
+		c.Set("user_role", claims.Role)
 		c.Set("user_id", claims.ID.String())
 		c.Next()
 	}
