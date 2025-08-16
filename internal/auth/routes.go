@@ -1,6 +1,9 @@
 package auth
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/ardianilyas/go-feature-based/pkg/middlewares"
+	"github.com/gin-gonic/gin"
+)
 
 func RegisterRoutes(r *gin.Engine, service Service) {
 	h := NewHandler(service)
@@ -11,5 +14,11 @@ func RegisterRoutes(r *gin.Engine, service Service) {
 		auth.POST("/login", h.Login)
 		auth.POST("/refresh", h.Refresh)
 		auth.POST("/logout", h.Logout)
+	}
+
+	protected := r.Group("/auth")
+	protected.Use(middlewares.JWTAuth())
+	{
+		protected.GET("/profile", h.Profile)
 	}
 }

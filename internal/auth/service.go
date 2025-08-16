@@ -13,6 +13,7 @@ type Service interface {
 	Register(input RegisterRequest) error
 	Login(input LoginRequest) (*User, string, string, error)
 	RefreshToken(refreshToken string) (*User, string, error)
+	GetProfile(userID uuid.UUID) (*User, error)
 }
 
 type service struct {
@@ -79,4 +80,13 @@ func (s *service) RefreshToken(refreshToken string) (*User, string, error) {
 	}
 
 	return user, newAccessToken, nil
+}
+
+func (s *service) GetProfile(userID uuid.UUID) (*User, error) {
+	user, err := s.repo.GetUserByID(userID)
+	if err != nil {
+		return nil, errors.New("user not found")
+	}
+
+	return user, nil
 }

@@ -6,7 +6,6 @@ import (
 
 	"github.com/ardianilyas/go-feature-based/pkg/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 func JWTAuth() gin.HandlerFunc {
@@ -25,14 +24,7 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 
-		userID, err := uuid.Parse(claims.ID.String())
-		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})			
-			c.Abort()
-			return
-		}
-
-		c.Set("user_id", userID)
+		c.Set("user_id", claims.ID.String())
 		c.Next()
 	}
 }

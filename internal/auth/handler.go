@@ -5,6 +5,7 @@ import (
 
 	"github.com/ardianilyas/go-feature-based/pkg/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type Handler struct {
@@ -60,6 +61,34 @@ func (h *Handler) Refresh(c *gin.Context) {
 	}
 
 	c.SetCookie("access_token", newAccessToken, 900, "/", "", false, true)
+	c.JSON(http.StatusOK, gin.H{"user": user})
+}
+
+func (h *Handler) Profile(c *gin.Context) {
+	val, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	userIDStr, ok := val.(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid user ID type"})
+		return
+	}
+
+	userID, err := uuid.Parse(userIDStr)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	user, err := h.service.GetProfile(userID)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "user not found"})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
