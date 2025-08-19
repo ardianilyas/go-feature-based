@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/ardianilyas/go-feature-based/internal/auth"
+	"github.com/ardianilyas/go-feature-based/internal/category"
 	"github.com/ardianilyas/go-feature-based/pkg/middlewares"
 	"github.com/gin-gonic/gin"
 )
@@ -11,6 +12,7 @@ import (
 func SetupRoutes(r *gin.Engine) {
 	authRoutes(r)
 	adminRoutes(r)
+	categoriesRoute(r)
 }
 
 func authRoutes(r *gin.Engine) {
@@ -25,4 +27,8 @@ func adminRoutes(r *gin.Engine) {
 	admin.GET("/", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"message": "Hello admin"})
 	})
+}
+
+func categoriesRoute(r *gin.Engine) {
+	category.RegisterRoutes(r)
 }
