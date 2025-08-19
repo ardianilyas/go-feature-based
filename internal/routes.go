@@ -1,0 +1,28 @@
+package internal
+
+import (
+	"net/http"
+
+	"github.com/ardianilyas/go-feature-based/internal/auth"
+	"github.com/ardianilyas/go-feature-based/pkg/middlewares"
+	"github.com/gin-gonic/gin"
+)
+
+func SetupRoutes(r *gin.Engine) {
+	authRoutes(r)
+	adminRoutes(r)
+}
+
+func authRoutes(r *gin.Engine) {
+	authRepo := auth.NewRepository()
+	authService := auth.NewService(authRepo)
+	auth.RegisterRoutes(r, authService)
+}
+
+func adminRoutes(r *gin.Engine) {
+	admin := r.Group("/admin")
+	admin.Use(middlewares.JWTAuth(), middlewares.RequireRole("admin"))
+	admin.GET("/", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{"message": "Hello admin"})
+	})
+}

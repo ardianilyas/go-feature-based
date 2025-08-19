@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/ardianilyas/go-feature-based/config"
-	"github.com/ardianilyas/go-feature-based/internal/auth"
+	"github.com/ardianilyas/go-feature-based/internal"
 	"github.com/ardianilyas/go-feature-based/internal/migrations"
 	"github.com/gin-gonic/gin"
 )
@@ -14,9 +14,7 @@ func main() {
 
 	r := gin.Default()
 	
-	authRepo := auth.NewRepository()
-	authService := auth.NewService(authRepo)
-	auth.RegisterRoutes(r, authService)
+	internal.SetupRoutes(r)
 
 	r.Run(":8000")
 }
