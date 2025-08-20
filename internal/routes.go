@@ -5,6 +5,7 @@ import (
 
 	"github.com/ardianilyas/go-feature-based/internal/auth"
 	"github.com/ardianilyas/go-feature-based/internal/category"
+	"github.com/ardianilyas/go-feature-based/internal/post"
 	"github.com/ardianilyas/go-feature-based/pkg/middlewares"
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,7 @@ func SetupRoutes(r *gin.Engine) {
 	authRoutes(r)
 	adminRoutes(r)
 	categoriesRoute(r)
+	postsRoute(r)
 }
 
 func authRoutes(r *gin.Engine) {
@@ -31,4 +33,8 @@ func adminRoutes(r *gin.Engine) {
 
 func categoriesRoute(r *gin.Engine) {
 	category.RegisterRoutes(r)
+}
+
+func postsRoute(r *gin.Engine) {
+	post.RegisterRotes(r)
 }

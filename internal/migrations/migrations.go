@@ -6,10 +6,15 @@ import (
 	"github.com/ardianilyas/go-feature-based/config"
 	"github.com/ardianilyas/go-feature-based/internal/auth"
 	"github.com/ardianilyas/go-feature-based/internal/category"
+	"github.com/ardianilyas/go-feature-based/internal/post"
 )
 
 func RunMigrations() {
-	err := config.DB.AutoMigrate(&auth.User{}, &category.Category{})
+	err := config.DB.AutoMigrate(
+		&auth.User{}, 
+		&category.Category{},
+		&post.Post{},
+	)
 	if err != nil {
 		log.Fatal("Error running migrations:", err)
 	}
