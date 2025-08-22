@@ -35,11 +35,6 @@ func (r *repository) GetCategoryByID(id uuid.UUID) (*Category, error) {
 
 func (r *repository) GetAllCategories(page, limit int, baseURL string) (pagination.PaginatedResult[Category], error) {
 	return pagination.Paginate[Category](config.DB, page, limit, baseURL)
-	// var categories []*Category
-	// if err := config.DB.Find(&categories).Error; err != nil {
-	// 	return nil, err
-	// }
-	// return categories, nil
 }
 
 func (r *repository) UpdateCategory(category *Category) error {
