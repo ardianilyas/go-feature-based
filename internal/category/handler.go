@@ -3,6 +3,7 @@ package category
 import (
 	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/ardianilyas/go-feature-based/pkg/utils"
 	"github.com/gin-gonic/gin"
@@ -59,15 +60,18 @@ func (h *Handler) GetCategoryByID(c *gin.Context) {
 }
 
 func (h *Handler) GetAllCategories(c *gin.Context) {
-	categories, err := h.service.GetAllCategories()
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
+
+	baseURL := utils.GetBaseURL(c)
+
+	categories, err := h.service.GetAllCategories(page, limit, baseURL)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"categories": categories,
-	})
+	c.JSON(http.StatusOK, categories)
 }
 
 func (h *Handler) UpdateCategory(c *gin.Context) {

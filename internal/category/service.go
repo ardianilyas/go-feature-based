@@ -1,11 +1,14 @@
 package category
 
-import "github.com/google/uuid"
+import (
+	"github.com/ardianilyas/go-feature-based/pkg/pagination"
+	"github.com/google/uuid"
+)
 
 type Service interface {
 	CreateCategory(category *Category) error
 	GetCategoryByID(id uuid.UUID) (*Category, error)
-	GetAllCategories() ([]*Category, error)
+	GetAllCategories(page, limit int, baseURL string) (pagination.PaginatedResult[Category], error)
 	UpdateCategory(category *Category) error
 	DeleteCategory(id uuid.UUID) error
 }
@@ -26,8 +29,8 @@ func (s *service) GetCategoryByID(id uuid.UUID) (*Category, error) {
 	return s.repo.GetCategoryByID(id)
 }
 
-func (s *service) GetAllCategories() ([]*Category, error) {
-	return s.repo.GetAllCategories()
+func (s *service) GetAllCategories(page, limit int, baseURL string) (pagination.PaginatedResult[Category], error) {
+	return s.repo.GetAllCategories(page, limit, baseURL)
 }
 
 func (s *service) UpdateCategory(category *Category) error {
