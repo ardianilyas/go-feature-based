@@ -9,7 +9,7 @@ func ResetTables() {
 }
 
 func RunSeeders() {
-	ResetTables()
+	// ResetTables()
 	SeedUser()
 	SeedCategory(50)
 	SeedPost(40)

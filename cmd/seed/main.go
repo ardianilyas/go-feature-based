@@ -9,6 +9,9 @@ import (
 func main() {
 	config.LoadEnv()
 	config.ConnectDB()
+
+	seed.ResetTables()
+
 	migrations.RunMigrations()
 
 	seed.RunSeeders()
