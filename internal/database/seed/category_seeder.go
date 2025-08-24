@@ -22,5 +22,5 @@ func SeedCategory(n int) {
 		}
 	}
 
-	fmt.Printf("%d fake categories seeded", n)
+	fmt.Printf("%d fake categories seeded\n", n)
 }
