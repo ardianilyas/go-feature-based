@@ -9,7 +9,7 @@ func RegisterRoutes(r *gin.Engine) {
 	h := NewHandler(NewService(NewRepository()))
 
 	categories := r.Group("/categories")
-	categories.Use(middlewares.JWTAuth())
+	categories.Use(middlewares.JWTAuth(), middlewares.RequireRole("admin"))
 	{
 		categories.POST("/", h.CreateCategory)
 		categories.GET("/", h.GetAllCategories)
