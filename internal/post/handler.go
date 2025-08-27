@@ -111,7 +111,7 @@ func (h *Handler) UpdatePost(c *gin.Context) {
 		if errors.Is(err, ErrPostNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
 		} else if errors.Is(err, ErrForbidden) {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
@@ -142,7 +142,7 @@ func (h *Handler) DeletePost(c *gin.Context) {
 		if errors.Is(err, ErrPostNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
 		} else if errors.Is(err, ErrForbidden) {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
