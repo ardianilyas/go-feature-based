@@ -4,6 +4,7 @@ import (
 	"github.com/ardianilyas/go-feature-based/config"
 	"github.com/ardianilyas/go-feature-based/internal"
 	"github.com/ardianilyas/go-feature-based/internal/migrations"
+	"github.com/ardianilyas/go-feature-based/pkg/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,6 +14,8 @@ func main() {
 	migrations.RunMigrations()
 
 	r := gin.Default()
+
+	r.Use(middlewares.CORSMiddleware())
 	
 	internal.SetupRoutes(r)
 
