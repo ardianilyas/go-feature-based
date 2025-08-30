@@ -11,10 +11,18 @@ import (
 )
 
 func SetupRoutes(r *gin.Engine) {
+	testRoutes(r)
 	authRoutes(r)
 	adminRoutes(r)
 	categoriesRoute(r)
 	postsRoute(r)
+}
+
+func testRoutes(r *gin.Engine) {
+	test := r.Group("/test")
+	test.GET("/", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{"message": "Hello test"})
+	})
 }
 
 func authRoutes(r *gin.Engine) {
