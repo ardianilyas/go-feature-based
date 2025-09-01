@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -11,6 +12,7 @@ import (
 	"github.com/ardianilyas/go-feature-based/config"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -66,7 +68,8 @@ func performRequest(r http.Handler, method, path string, body any, cookies ...*h
 
 // -------- Init Logger --------
 func init() {
-	config.InitLogger()
+	config.Log = logrus.New()
+	config.Log.Out = io.Discard
 }
 
 // -------- Tests --------
