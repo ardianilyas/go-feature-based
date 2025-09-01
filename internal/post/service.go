@@ -3,7 +3,9 @@ package post
 import (
 	"errors"
 
+	"github.com/ardianilyas/go-feature-based/config"
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
@@ -33,6 +35,11 @@ func (s *service) CreatePost(post *Post) (*Post, error) {
 		return nil, err
 	}
 
+	config.Log.WithFields(logrus.Fields{
+		"post_id": post.ID,
+		"title":   post.Title,
+		"user_id": post.UserID,
+	}).Info("Post created")
 	return s.repo.GetPostByID(post.ID)
 }
 
@@ -60,6 +67,15 @@ func (s *service) UpdatePost(post *Post, userID uuid.UUID) (*Post, error) {
 	if err := s.repo.UpdatePost(post); err != nil {
 		return nil, err
 	}
+
+	config.Log.WithFields(logrus.Fields{
+		"post_id":         post.ID,
+		"user_id":         userID,
+		"old_title":       existingPost.Title,
+		"new_title":       post.Title,
+		"old_category_id": existingPost.CategoryID,
+		"new_category_id": post.CategoryID,
+	}).Info("Post updated")
 	return s.repo.GetPostByID(post.ID)
 } 
 
@@ -71,5 +87,13 @@ func (s *service) DeletePost(id, userID uuid.UUID) error {
 	if existingPost.UserID != userID {
 		return ErrForbidden
 	}
-	return s.repo.DeletePost(id)
+	if err := s.repo.DeletePost(id); err != nil {
+		return err
+	}
+	config.Log.WithFields(logrus.Fields{
+		"post_id": id,
+		"title":   existingPost.Title,
+		"user_id": userID,
+	}).Info("Post deleted")
+	return nil
 }

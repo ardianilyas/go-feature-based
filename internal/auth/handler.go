@@ -3,9 +3,11 @@ package auth
 import (
 	"net/http"
 
+	"github.com/ardianilyas/go-feature-based/config"
 	"github.com/ardianilyas/go-feature-based/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 )
 
 type Handler struct {
@@ -27,6 +29,9 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
+	config.Log.WithFields(logrus.Fields{
+		"email": req.Email,
+	}).Info("User registered successfully")
 	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
 }
 

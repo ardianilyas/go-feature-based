@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	config.InitLogger()
 	config.LoadEnv()
 	config.ConnectDB()
 	migrations.RunMigrations()
