@@ -1,12 +1,30 @@
 package config
 
 import (
+	"encoding/json"
 	"os"
 
 	"github.com/sirupsen/logrus"
 )
 
 var Log *logrus.Logger
+
+type OrderedJSONFormatter struct {}
+
+func (f *OrderedJSONFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+	log := map[string]interface{}{
+		"level": entry.Level.String(),
+		"message": entry.Message,
+		"data": entry.Data,
+		"time": entry.Time.Format("2006-01-02 15:04:05"),
+	}
+
+	b, err := json.Marshal(log)
+	if err != nil {
+		return nil, err
+	}
+	return append(b, '\n'), nil
+}
 
 func InitLogger() {
 	Log = logrus.New()
@@ -18,6 +36,6 @@ func InitLogger() {
 		Log.Out = os.Stdout
 	}
 
-	Log.SetFormatter(&logrus.JSONFormatter{})
+	Log.SetFormatter(&OrderedJSONFormatter{})
 	Log.SetLevel(logrus.InfoLevel)
 }
