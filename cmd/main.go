@@ -13,10 +13,13 @@ func main() {
 	config.LoadEnv()
 	config.ConnectDB()
 	migrations.RunMigrations()
+	
+	go middlewares.CleanupClients()
 
 	r := gin.Default()
 
 	r.Use(middlewares.CORSMiddleware())
+	r.Use(middlewares.RateLimitMiddleware())
 	
 	internal.SetupRoutes(r)
 
